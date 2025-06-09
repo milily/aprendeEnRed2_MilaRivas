@@ -127,6 +127,34 @@ JOIN materias m ON m.id = c.materia_id
 JOIN profesor_materia pm ON pm.materia_id = m.id
 JOIN profesores p ON p.id = pm.profesor_id;
 
+-- Vista: vista_pagado_por_estudiante
+CREATE VIEW vista_pagado_por_estudiante AS
+SELECT 
+  e.nombre AS estudiante,
+  SUM(p.monto) AS total_pagado
+FROM pagos p
+JOIN inscripciones i ON p.inscripcion_id = i.id
+JOIN estudiantes e ON i.estudiante_id = e.id
+GROUP BY e.nombre;
+
+-- Vista: vista_certificados_emitidos
+CREATE VIEW vista_certificados_emitidos AS
+SELECT 
+  e.nombre AS estudiante,
+  c.titulo AS curso,
+  cert.fecha_emision,
+  cert.codigo_certificado
+FROM certificados cert
+JOIN estudiantes e ON e.id = cert.estudiante_id
+JOIN cursos c ON c.id = cert.curso_id;
+
+-- Vista: vista_usuarios_roles
+CREATE VIEW vista_usuarios_roles AS
+SELECT 
+  email,
+  rol
+FROM usuarios;
+
 -- ========================================
 -- FUNCIONES
 -- ========================================
